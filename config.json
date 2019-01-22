@@ -1,0 +1,13 @@
+{
+	"baseURL": "/",
+	"title": "Robinson Lam - Full Stack Developer",
+	"languages": {
+		"en": {
+			"lang": "en",
+			"languageName": "English",
+			"weight": 1
+		}
+	},
+	"MetaDataFormat": "json",
+	"theme": "ziro"
+}

@@ -1,0 +1,56 @@
+/* ------------------------------------- */
+/* 	Typography Styles 									 */
+/* ------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css?family=Raleway:700|Roboto:400,700');
+
+body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+}
+
+a {
+	color: 			$color-yellow;
+}
+
+span.jumbo {
+	font-family: 'Raleway', sans-serif;
+	font-size: 6rem;
+}
+
+p {
+	font-weight: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: bold;
+}
+
+h1, h2, h3 {
+	font-family: 'Raleway', sans-serif;
+}
+
+h1 {
+	/* Page Titles */
+	font-size: 3rem;
+}
+
+h2 {
+	/* Section Headings */
+	font-size: 2rem;
+}
+
+h3 {
+	/* Paragraph Headings */
+	font-size: 1.5rem;
+}
+
+h4 {
+	/* Header and Links */
+	font-size: 1rem;
+}
+
+h5 {
+	text-transform: uppercase;
+	font-size: 0.875rem;
+}

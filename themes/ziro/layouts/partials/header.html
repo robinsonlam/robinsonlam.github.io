@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+	<head>
+			{{ partial "styles.html" . }}
+
+			{{ $consoleLogScript := resources.Get "js/consoleLog.js" }}
+			<script type="text/javascript" src="{{ $consoleLogScript.Permalink }}"></script>
+
+	    <title>{{ .Title }}</title>
+	</head>
+
+	<body>

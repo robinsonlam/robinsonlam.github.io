@@ -1,0 +1,8 @@
+<p>Role Slider Partial</p>
+
+{{ range $key, $index := $.Site.Data.landing.roles }}
+	<h3>{{ $key }}</h3>
+  {{ range $index }}
+		<p>{{ . }}</p>
+	{{ end }}
+{{ end }}
