@@ -1,0 +1,87 @@
+/* ------------------------------------- */
+/* 	Footer Styles 											 */
+/* ------------------------------------- */
+
+body {
+	display: 				flex;
+ 	min-height: 		100vh;
+ 	flex-direction: column;
+}
+
+.app {
+	flex: 1;
+}
+
+footer {
+}
+
+.footerMain {
+	background: 		$color-yellow;
+	color: 					$color-white;
+
+	padding:				$padding-general;
+
+	display:				flex;
+	flex-direction: row;
+	align-items: 		center;
+
+	a {
+		color: 						$color-white;
+		text-decoration: 	none;
+
+		&:hover {
+			color: 			$color-black;
+		}
+	}
+}
+
+.footerNavContainer {
+	display:				flex;
+	flex-direction: row;
+	align-items:		center;
+
+	a {
+		padding:			$padding-general;
+	}
+}
+
+.footerIcon {
+	padding:				$padding-general;
+
+	img {
+		height: 			40px;
+	}
+
+}
+
+.footerNav {
+	display: 				flex;
+	flex-direction: row;
+}
+
+.footerSocial {
+	display:				flex;
+	flex-direction: column;
+	margin-left: 		auto;
+	padding: 				$padding-general;
+
+	h5 {
+		padding-bottom: $padding-half;
+		border-bottom: 	$divider-line-height solid $color-white;
+	}
+}
+
+.socialIcons {
+	display: 				flex;
+	flex-direction: row;
+	align-items: 		flex-start;
+
+	margin-left:		-($padding-half);
+
+	a {
+		padding:			$padding-general $padding-half;
+		i {
+			height: 		16px;
+		}
+	}
+}
