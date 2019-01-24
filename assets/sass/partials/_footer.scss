@@ -64,8 +64,9 @@ footer {
 	flex-direction: column;
 	margin-left: 		auto;
 	padding: 				$padding-general;
+	padding-bottom:	0;
 
-	h5 {
+	.socialHeading {
 		padding-bottom: $padding-half;
 		border-bottom: 	$divider-line-height solid $color-white;
 	}
@@ -81,7 +82,34 @@ footer {
 	a {
 		padding:			$padding-general $padding-half;
 		i {
-			height: 		16px;
+			font-size: 	18px;
+		}
+	}
+}
+
+@media all and (max-width: 480px) {
+	.footerNavContainer {
+		display: none;
+	}
+
+	.socialHeading {
+		display: none;
+	}
+
+	.footerSocial {
+		margin-right: auto;
+		padding: 0;
+	}
+
+	.socialIcons {
+		align-items: center;
+
+		a {
+			padding: $padding-general;
+
+			i {
+				font-size: 20px;
+			}
 		}
 	}
 }
