@@ -1,8 +1,0 @@
-{
-	"roles": {
-		"web": ["Developer", "Designer"],
-		"volleyball": ["Player", "Addict"],
-		"dog": ["Owner", "Samoyed"],
-		"hobby": ["Gamer", "Designer"]
-	}
-}

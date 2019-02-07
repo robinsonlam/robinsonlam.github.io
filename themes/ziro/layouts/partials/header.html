@@ -2,11 +2,8 @@
 <html>
 	<head>
 			{{ partial "styles.html" . }}
-
-			{{ $consoleLogScript := resources.Get "js/consoleLog.js" }}
-			<script type="text/javascript" src="{{ $consoleLogScript.Permalink }}"></script>
-
 	    <title>{{ .Title }}</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 
 	<body>
