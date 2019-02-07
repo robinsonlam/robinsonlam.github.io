@@ -1,32 +1,33 @@
+</div>
+
+<footer>
+	<div class="footerMain">
+		<div class="footerNavContainer">
+			<div class="footerIcon">
+				{{ $logoWhite := resources.Get "images/RL_LOGO_WHITE.svg" }}
+				<img src="{{ $logoWhite.Permalink }}" alt="image">
+			</div>
+
+			<div class="footerNav">
+				<h4><a href="#">Home</a></h4>
+				<h4><a href="#">Work</a></h4>
+				<h4><a href="#">About</a></h4>
+				<h4><a href="#">Contact</a></h4>
+			</div>
 		</div>
 
-		<footer>
-			<div class="footerMain">
-				<div class="footerNavContainer">
-					<div class="footerIcon">
-						{{ $logoWhite := resources.Get "images/RL_LOGO_WHITE.svg" }}
-						<img src="{{ $logoWhite.Permalink }}" alt="image">
-					</div>
+		<div class="footerSocial">
+			<h5 class="socialHeading">Social</h5>
 
-					<div class="footerNav">
-						<h4><a href="#">Home</a></h4>
-						<h4><a href="#">Work</a></h4>
-						<h4><a href="#">About</a></h4>
-						<h4><a href="#">Contact</a></h4>
-					</div>
-				</div>
-
-				<div class="footerSocial">
-					<h5 class="socialHeading">Social</h5>
-
-					<div class="socialIcons">
-						<a href="mailto:robinsonlam94@gmail.com"><i class="fas fa-envelope"></i></a>
-						<a href="#"><i class="fab fa-github"></i></a>
-						<a href="#"><i class="fab fa-linkedin"></i></a>
-					</div>
-				</div>
+			<div class="socialIcons">
+				<a href="mailto:robinsonlam94@gmail.com"><i class="fas fa-envelope"></i></a>
+				<a href="#"><i class="fab fa-github"></i></a>
+				<a href="#"><i class="fab fa-linkedin"></i></a>
 			</div>
-		</footer>
+		</div>
+	</div>
+</footer>
 
-	</body>
+</body>
+
 </html>

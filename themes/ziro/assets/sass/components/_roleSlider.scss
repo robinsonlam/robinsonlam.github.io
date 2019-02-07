@@ -1,0 +1,55 @@
+/* ------------------------------------- */
+/* 	Component - Role Slider Styles: ;		 */
+/* ------------------------------------- */
+
+.roleSliderContainer {
+	display: flex;
+	margin: 0 auto;
+	margin-top: 200px;
+}
+
+.roleSlider {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+
+	margin: 0 auto;
+}
+
+.roleSliderHeader {
+	& > h5 {
+		color: $color-yellow;
+		font-family: 'Raleway';
+		font-weight: bold;
+
+		margin-bottom: $padding-half;
+	}
+}
+
+.roleSliderContent {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.webRole {
+	display: flex;
+	align-items: center;
+
+	span {
+		font-size: inherit;
+	}
+
+	.category {
+		text-transform: lowercase;
+	}
+
+	.seperator {
+
+	}
+
+	.role {
+		text-transform: capitalize;
+	}
+}

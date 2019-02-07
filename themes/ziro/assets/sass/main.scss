@@ -1,0 +1,23 @@
+/* ------------------------------------- */
+/* 	Imports 	 													 */
+/* ------------------------------------- */
+
+@import "partials/reset";
+@import "partials/variables";
+@import "partials/globals";
+@import "partials/typography";
+
+@import "partials/header";
+@import "partials/footer";
+
+/* ------------------------------------- */
+/* 	Imports - Components								 */
+/* ------------------------------------- */
+
+@import "components/roleSlider";
+
+/* ------------------------------------- */
+/* 	Imports - Pages											 */
+/* ------------------------------------- */
+
+@import "pages/home";

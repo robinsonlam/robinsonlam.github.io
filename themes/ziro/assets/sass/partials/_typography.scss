@@ -7,7 +7,9 @@
 body {
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
+
 	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -54,4 +56,16 @@ h4 {
 h5 {
 	text-transform: uppercase;
 	font-size: 0.875rem;
+}
+
+@media all and (max-width: 480px) {
+	span.jumbo {
+		font-size: 1.5rem;
+	}
+}
+
+@media all and (min-width: 481px) and (max-width: 768px) {
+	span.jumbo {
+		font-size: 4rem;
+	}
 }

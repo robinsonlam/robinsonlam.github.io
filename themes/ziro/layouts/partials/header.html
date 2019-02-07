@@ -10,4 +10,16 @@
 	</head>
 
 	<body>
+		<div class="globalHeader">
+			<div class="headerIcon">
+				{{ $logoWhite := resources.Get "images/RL_LOGO_WHITE.svg" }}
+				<img src="{{ $logoWhite.Permalink }}" alt="image">
+			</div>
+
+			<div class="headerNav">
+				<h4><a href="#">Work</a></h4>
+				<h4><a href="#">About</a></h4>
+				<h4><a href="#">Contact</a></h4>
+			</div>
+		</div>
 		<div class="app">

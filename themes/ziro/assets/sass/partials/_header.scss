@@ -1,0 +1,54 @@
+/* ------------------------------------- */
+/* 	Header Styles 											 */
+/* ------------------------------------- */
+
+.globalHeader {
+	display: flex;
+	align-items: center;
+
+	.headerIcon {
+		padding:	$padding-general;
+		img {
+			height: 40px;
+		}
+	}
+
+	.headerNav {
+		padding: 0 $padding-general;
+		display: flex;
+		flex-direction: row;
+		margin-left: auto;
+
+		h4 {
+			padding: $padding-half;
+			margin-left: $padding-general;
+
+			a {
+				color: $color-white;
+				text-decoration: none;
+
+				&:hover {
+					color: $color-yellow;
+				}
+			}
+		}
+	}
+}
+
+@media all and (max-width: 480px) {
+	.globalHeader {
+		.headerNav {
+			margin-left: $padding-general;
+			padding: 0;
+
+			h4 {
+				margin-left: 0;
+				margin-right: $padding-half;
+
+				a {
+					padding: 0;
+				}
+			}
+		}
+	}
+}
