@@ -46,6 +46,9 @@ const incrementRoleSlider = () => {
 
 	$(".webRole .category").html(roleSliderData[categoryIndex]["category"]);
 	$(".webRole .role").html(roleSliderData[categoryIndex]["roles"][roleIndex]);
+
+	// $(".webRole .category").lettering();
+	// $(".webRole .role").lettering();
 }
 
 const resetRoleSlider = () => {

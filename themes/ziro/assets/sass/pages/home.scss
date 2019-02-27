@@ -14,5 +14,18 @@
     position: absolute;
     top: 0;
     left: 0;
+
+		&::after {
+			position: absolute;
+			left: 0;
+			top: 0;
+
+			height: 100%;
+			width: 100%;
+
+			content: '';
+
+			background: rgba(0, 0, 0, 0.4);
+		}
 	}
 }
