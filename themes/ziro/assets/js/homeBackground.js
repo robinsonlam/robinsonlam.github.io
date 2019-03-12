@@ -1,8 +1,16 @@
 
+var COLOR_YELLOW = 0xffb000;
+
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 4000 );
 var renderer = new THREE.WebGLRenderer();
-scene.background = new THREE.Color( 0xffb000 );
+scene.background = new THREE.Color( COLOR_YELLOW );
+
+var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.4 );
+var light = new THREE.AmbientLight( 0xfafafa ); // soft white light
+
+scene.add( directionalLight );
+scene.add( light );
 
 var sceneRotationSpeed = 0.0002;
 
@@ -33,11 +41,11 @@ function createParticles() {
 
 	for ( var i = 0; i < particleCount; i++ ) {
 
-		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+		var scaleX = Math.random() * 2;
 
-		var color = Math.random() * 0x909090 + 0x909090;
+		var geometry = new THREE.BoxGeometry( scaleX, scaleX, scaleX );
 
-		var pMaterial = new THREE.MeshBasicMaterial({ color });
+		var pMaterial = new THREE.MeshLambertMaterial({ color: 0xffb000 });
 
 		var particle = new THREE.Mesh( geometry, pMaterial );
 
@@ -60,9 +68,9 @@ function onWindowResize() {
    renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-function createSphere(radius = 1, widthSegments = 32, heightSegments = 32, color = 0xffff00) {
+function createSphere(radius = 1, widthSegments = 32, heightSegments = 32, color = COLOR_YELLOW) {
 	var geometry = new THREE.SphereGeometry( radius, widthSegments, heightSegments );
-	var material = new THREE.MeshBasicMaterial({ color });
+	var material = new THREE.MeshLambertMaterial({ color });
 	var sphere = new THREE.Mesh( geometry, material );
 	scene.add( sphere );
 }
