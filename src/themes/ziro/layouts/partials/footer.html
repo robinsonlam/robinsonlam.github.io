@@ -19,10 +19,10 @@
 	{{ $letteringScript := resources.Get "lib/lettering-0.6.1.min.js" }}
 
 	{{ $homeBGScript := resources.Get "js/homeBackground.js" }}
-	<script type="text/javascript" src=".{{ $threeJSScript.RelPermalink }}"></script>
-	<script type="text/javascript" src=".{{ $jqueryScript.RelPermalink }}"></script>
+	<script type="text/javascript" src="{{ $threeJSScript.Permalink }}"></script>
+	<script type="text/javascript" src="{{ $jqueryScript.Permalink }}"></script>
 
-	<script type="text/javascript" src=".{{ $homeBGScript.RelPermalink }}"></script>
+	<script type="text/javascript" src="{{ $homeBGScript.Permalink }}"></script>
 
 </body>
 
