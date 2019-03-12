@@ -15,6 +15,11 @@ a {
 	transition: color 0.17s ease-in-out;
 }
 
+.app {
+	display: flex;
+	flex-direction: column;
+}
+
 .page {
 	padding: $padding-large;
 }

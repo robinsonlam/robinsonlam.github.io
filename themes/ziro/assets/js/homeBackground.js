@@ -2,11 +2,15 @@
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 4000 );
 var renderer = new THREE.WebGLRenderer();
+scene.background = new THREE.Color( 0xffb000 );
 
 var sceneRotationSpeed = 0.0002;
 
+
 // Set size and responsive functionality for renderer
 renderer.setSize( window.innerWidth, window.innerHeight );
+
+
 window.addEventListener( 'resize', onWindowResize, false );
 
 // Add renderer to DOM

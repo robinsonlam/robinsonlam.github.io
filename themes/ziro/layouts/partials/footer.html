@@ -18,13 +18,11 @@
 	{{ $jqueryScript := resources.Get "lib/jquery-3.3.1.js" }}
 	{{ $letteringScript := resources.Get "lib/lettering-0.6.1.min.js" }}
 
-	{{ $roleSliderScript := resources.Get "js/roleSlider.js" }}
 	{{ $homeBGScript := resources.Get "js/homeBackground.js" }}
 	<script type="text/javascript" src="{{ $threeJSScript.Permalink }}"></script>
 	<script type="text/javascript" src="{{ $jqueryScript.Permalink }}"></script>
 
 	<script type="text/javascript" src="{{ $homeBGScript.Permalink }}"></script>
-	<script type="text/javascript" src="{{ $roleSliderScript.Permalink }}"></script>
 
 </body>
 
