@@ -9,6 +9,11 @@
 
 `hugo server --watch --verbose --log`
 
-## Subtree Push public to gh-pages
+## Building
 
-`git subtree push --prefix public origin gh-pages`
+```
+	// from main directory
+
+	cd src
+	hugo -d ../
+```
