@@ -71,3 +71,11 @@ h5 {
 		font-size: 4rem;
 	}
 }
+
+// Note 9
+
+@media all and (min-width: 481px) and (max-width: 768px) and (-webkit-device-pixel-ratio: 3) {
+	.jumbo {
+		font-size: 4rem;
+	}
+}
