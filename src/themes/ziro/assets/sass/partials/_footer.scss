@@ -86,7 +86,7 @@ footer {
 	}
 }
 
-@media all and (max-width: 480px) {
+@media all and (max-device-width: 480px) {
 	.footerNavContainer {
 		display: none;
 	}
@@ -114,7 +114,7 @@ footer {
 	}
 }
 
-@media all and (min-width: 481px) and (max-width: 768px) {
+@media all and (min-device-width: 481px) and (max-device-width: 768px) {
 	footer {
 		position: absolute;
 		bottom: 0;
