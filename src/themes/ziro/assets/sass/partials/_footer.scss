@@ -96,6 +96,7 @@ footer {
 	}
 
 	.footerSocial {
+		margin-top: -100px;
 		margin-right: auto;
 		padding: 0;
 	}
@@ -110,5 +111,13 @@ footer {
 				font-size: 20px;
 			}
 		}
+	}
+}
+
+@media all and (min-width: 481px) and (max-width: 768px) {
+	footer {
+		position: absolute;
+		bottom: 0;
+		right: 0;
 	}
 }
