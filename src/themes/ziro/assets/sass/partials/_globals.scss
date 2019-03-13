@@ -2,9 +2,14 @@
 /* 	Global Styles 											 */
 /* ------------------------------------- */
 
+html {
+	height: 		100%;
+}
+
 body {
 	background: $color-black;
 	color: 			$color-white;
+	height: 		100%;
 }
 
 /* ------------------------------------- */

@@ -4,7 +4,7 @@
 
 body {
 	display: 				flex;
- 	min-height: 		100vh;
+ 	min-height: 		100%;
  	flex-direction: column;
 }
 
@@ -86,7 +86,7 @@ footer {
 	}
 }
 
-@media all and (max-device-width: 480px) {
+@media all and (max-device-width: 900px) {
 	.footerNavContainer {
 		display: none;
 	}
@@ -96,7 +96,6 @@ footer {
 	}
 
 	.footerSocial {
-		margin-top: -100px;
 		margin-right: auto;
 		padding: 0;
 	}
@@ -114,10 +113,13 @@ footer {
 	}
 }
 
-@media all and (min-device-width: 481px) and (max-device-width: 768px) {
-	footer {
-		position: absolute;
-		bottom: 0;
-		right: 0;
+@media all and (min-device-width: 481px) and (max-device-width: 900px) {
+	.footerMain {
+		align-items: flex-end;
+	}
+
+	.footerSocial {
+		margin-left: auto;
+		margin-right: 0;
 	}
 }
