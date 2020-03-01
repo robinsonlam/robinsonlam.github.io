@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+
+
+<link rel="stylesheet" href="./sass/main.min.af951d37456e94a949f733f03c5cb740ae6a3cf044d4046c400a11688c7e4a77.css">
+
+	    <title>about</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+
+	<body>
+		<div class="globalHeader">
+			<div class="headerIcon">
+				
+				<img src="/images/RL_LOGO_WHITE.svg" alt="image">
+			</div>
+
+			<div class="headerNav">
+				<h4><a href="#">Work</a></h4>
+				<h4><a href="#">About</a></h4>
+				<h4><a href="#">Contact</a></h4>
+			</div>
+		</div>
+		<div class="app">
+
+
+	  <h1>about</h1>
+	  
+
+<h2 id="about-me">about me</h2>
+
+<p>Hi there, you just reached my blog.</p>
+
+
+</div>
+
+<footer>
+	<div class="footerMain">
+		<div class="footerSocial">
+			<h5 class="socialHeading">Social</h5>
+
+			<div class="socialIcons">
+				<a href="mailto:robinsonlam94@gmail.com"><i class="fas fa-envelope"></i></a>
+				<a href="#"><i class="fab fa-github"></i></a>
+				<a href="#"><i class="fab fa-linkedin"></i></a>
+			</div>
+		</div>
+	</div>
+</footer>
+
+	
+	
+	
+
+	
+	<script type="text/javascript" src="./lib/three.js"></script>
+	<script type="text/javascript" src="./lib/jquery-3.3.1.js"></script>
+
+	<script type="text/javascript" src="./js/homeBackground.js"></script>
+
+</body>
+
+</html>
+
