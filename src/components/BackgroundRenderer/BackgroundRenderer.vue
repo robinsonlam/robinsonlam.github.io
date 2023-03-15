@@ -116,7 +116,7 @@
 
 <script lang="ts">
 import { ref }  from "vue";
-import { Box, Camera, LambertMaterial, DirectionalLight, Renderer, Scene } from 'troisjs';
+import { Box, Camera, LambertMaterial, DirectionalLight, AmbientLight, Renderer, Scene } from 'troisjs';
 
 type Matrix = {
 	x: number,
@@ -134,26 +134,24 @@ type Particle = {
 const GLOBAL = {
 	SCENE_ROTATION_SPEED: 0.0002,
 	COLORS: {
-		YELLOW: 0xffb000,
-		WHITE: 0xffffff,
-		SOFT_WHITE: 0xfafafa
-	}
+		YELLOW: "#ffb000",
+		WHITE: "#ffffff",
+		SOFT_WHITE: "#fafafa"
+	},
+	PARTICLE_COUNT: 120
 };
 
-const cameraElement = ref(null);
-
 export default {
-	components: { Box, Camera, LambertMaterial, DirectionalLight, Renderer, Scene },
-	mounted() {
+	components: { Box, Camera, LambertMaterial, DirectionalLight, AmbientLight, Renderer, Scene },
+	created() {
 		this.cameraPosition = setupCameraPosition()
 		this.bgParticles = createParticles()
-
-		let bgParticleRefs = this.$refs.bgParticles as { rotation: Matrix }[];
-
-
+	},
+	mounted() {
+		let bgParticleRefs = this.$refs.bgParticlesRefs as { rotation: Matrix }[];
 		const renderer = this.$refs.renderer as typeof Renderer;
 		renderer.onBeforeRender(() => {	
-			bgParticleRefs.forEach((p) => {
+			bgParticleRefs?.forEach((p) => {
 				let rotateSpeed = Math.random() * 0.008;
 				p.rotation.x += rotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
 				p.rotation.y += rotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
@@ -165,7 +163,6 @@ export default {
 				x: this.sceneRotation.x + GLOBAL.SCENE_ROTATION_SPEED,
 				y: this.sceneRotation.y + (GLOBAL.SCENE_ROTATION_SPEED * 2),
 			}
-
 		});
 	},
 	data() {
@@ -179,16 +176,16 @@ export default {
 			sceneRotation: {
 				x: 0, y: 0, z: 0
 			},
-			bgParticles: [] as Particle[]
+			bgParticles: [] as Particle[],
+			bgParticlesRefs: [] as { rotation: Matrix }[]
 		}
 	}
 };
 
 const createParticles = (): Particle[] => {
-	const particleCount = 1024;
 	let particles = [];
 
-	for ( var i = 0; i < particleCount; i++ ) {
+	for ( var i = 0; i < GLOBAL.PARTICLE_COUNT; i++ ) {
 		
 		let particle = {
 			name: '',
@@ -243,7 +240,7 @@ const setupCameraPosition = () => {
 			v-for="particle in bgParticles"
 			:scale="particle.scaleMatrix"
 			:position="particle.positionMatrix"
-			ref="bgParticles"
+			ref="bgParticlesRefs"
 		>
 			<LambertMaterial 
 				:color="sceneBGColor"
