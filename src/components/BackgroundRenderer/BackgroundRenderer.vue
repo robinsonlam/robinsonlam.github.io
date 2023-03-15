@@ -1,5 +1,6 @@
-<script setup lang="ts">
-	import * as THREE from 'three';
+<!-- <script setup lang="ts">
+	import { onMounted, h } from "vue";
+	import * as THREE from 'troisjs';
 
 	interface ThreeCamera {
 		camera: THREE.PerspectiveCamera,
@@ -23,7 +24,7 @@
 	const setupScene = () => {
 		// * Setup Camera & Camera Position
 		const camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 4000 );
-			// Set camera position
+		// Set camera position
 		camera.position.z = 200;
 		camera.position.y = 0;
 		camera.position.x = 0;
@@ -37,7 +38,7 @@
 		scene.background = new THREE.Color( GLOBAL.COLORS.YELLOW );
 
 		return { camera, renderer, scene };
-	};
+};
 	const setupLighting = ({ scene }: ThreeScene) => {
 		// * Setup Lighting
 		var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.4 );
@@ -59,7 +60,7 @@
 			particle.position.y = Math.random() * 200 - 100;
 			particle.position.z = Math.random() * 200 - 100;
 
-			// particle.scale.x = particle.scale.y = particle.scale.z = 0.00001;
+			particle.scale.x = particle.scale.y = particle.scale.z = 0.00001;
 			scene.add( particle );
 		}
 	};
@@ -68,7 +69,7 @@
 		camera.updateProjectionMatrix();
 		renderer.setSize( window.innerWidth, window.innerHeight );
 	};
-	// const createSphere = ({ scene, radius = 1, widthSegments = 32, heightSegments = 32, color = GLOBAL.COLORS.YELLOW }) => {
+		// const createSphere = ({ scene, radius = 1, widthSegments = 32, heightSegments = 32, color = GLOBAL.COLORS.YELLOW }) => {
 	// 	var geometry = new THREE.SphereGeometry( radius, widthSegments, heightSegments );
 	// 	var material = new THREE.MeshLambertMaterial({ color });
 	// 	var sphere = new THREE.Mesh( geometry, material );
@@ -93,25 +94,163 @@
 	};
 
 
+
 	// * Init
 	const { camera, renderer, scene } = setupScene();
-	setupLighting({ scene });
+	// setupLighting({ scene });
 
 	// Set size and responsive functionality for renderer
 	window.addEventListener( 'resize', () => onWindowResize({ camera, renderer }), false );
 
 	// Add renderer to DOM
-	const BackgroundDomElement = renderer.domElement;
+	const RendererElement = renderer.domElement.outerHTML;
 
 	// Create shapes
 	createParticles({ scene });
 
-	// Start frame animation
-	animate({ camera, renderer, scene });
+	onMounted(() => {
+		animate({ camera, renderer, scene });
+	})
+</script> -->
+
+
+<script lang="ts">
+import { ref }  from "vue";
+import { Box, Camera, LambertMaterial, DirectionalLight, Renderer, Scene } from 'troisjs';
+
+type Matrix = {
+	x: number,
+	y: number,
+	z: number
+}
+
+type Particle = {
+	name: string;
+	positionMatrix: Matrix;
+	rotationMatrix: Matrix;
+	scaleMatrix: Matrix;
+}
+
+const GLOBAL = {
+	SCENE_ROTATION_SPEED: 0.0002,
+	COLORS: {
+		YELLOW: 0xffb000,
+		WHITE: 0xffffff,
+		SOFT_WHITE: 0xfafafa
+	}
+};
+
+const cameraElement = ref(null);
+
+export default {
+	components: { Box, Camera, LambertMaterial, DirectionalLight, Renderer, Scene },
+	mounted() {
+		this.cameraPosition = setupCameraPosition()
+		this.bgParticles = createParticles()
+
+		let bgParticleRefs = this.$refs.bgParticles as { rotation: Matrix }[];
+
+
+		const renderer = this.$refs.renderer as typeof Renderer;
+		renderer.onBeforeRender(() => {	
+			bgParticleRefs.forEach((p) => {
+				let rotateSpeed = Math.random() * 0.008;
+				p.rotation.x += rotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
+				p.rotation.y += rotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
+				p.rotation.z += rotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
+			})
+
+			this.sceneRotation = {
+				...this.sceneRotation,
+				x: this.sceneRotation.x + GLOBAL.SCENE_ROTATION_SPEED,
+				y: this.sceneRotation.y + (GLOBAL.SCENE_ROTATION_SPEED * 2),
+			}
+
+		});
+	},
+	data() {
+		return {
+			sceneBGColor: GLOBAL.COLORS.YELLOW,
+			lightColor: GLOBAL.COLORS.WHITE,
+			ambientLightColor: GLOBAL.COLORS.SOFT_WHITE,
+			cameraPosition: {
+				x: 0, y: 0, z: 0
+			},
+			sceneRotation: {
+				x: 0, y: 0, z: 0
+			},
+			bgParticles: [] as Particle[]
+		}
+	}
+};
+
+const createParticles = (): Particle[] => {
+	const particleCount = 1024;
+	let particles = [];
+
+	for ( var i = 0; i < particleCount; i++ ) {
+		
+		let particle = {
+			name: '',
+			positionMatrix: { x: 0, y: 0, z: 0 },
+			scaleMatrix: { x: 0, y: 0, z: 0 },
+			rotationMatrix: { x: 0, y: 0, z: 0 }
+		}
+
+		particle.name = "Cube Particle";
+		particle.positionMatrix.x = Math.random() * 200 - 100;
+		particle.positionMatrix.y = Math.random() * 200 - 100;
+		particle.positionMatrix.z = Math.random() * 200 - 100;
+
+		particle.scaleMatrix.x = particle.scaleMatrix.y = particle.scaleMatrix.z = 0.00001;
+
+		particles.push( particle );
+	}
+
+	return particles;
+}
+
+const setupCameraPosition = () => {
+	let cameraPosition = {
+		x: 0, y: 0, z: 0
+	}
+
+	// * Setup Camera & Camera Position
+	cameraPosition.x = 0;
+	cameraPosition.y = 0;
+	cameraPosition.z = 200;
+
+	return cameraPosition;
+};
 </script>
 
 <template>
-    {{ BackgroundDomElement }}
+	<Renderer
+		ref="renderer"
+		resize="'window'"
+	>
+		<Camera :position="cameraPosition" />
+		<Scene :background="sceneBGColor">
+		<DirectionalLight
+			:color="lightColor"
+			:intensity="0.4"
+		/>
+		<AmbientLight 
+			:color="ambientLightColor"
+		/>
+
+		<Box
+			v-for="particle in bgParticles"
+			:scale="particle.scaleMatrix"
+			:position="particle.positionMatrix"
+			ref="bgParticles"
+		>
+			<LambertMaterial 
+				:color="sceneBGColor"
+			/>
+		</Box>
+		</Scene>
+	</Renderer>
 </template>
 
 <style scoped>
