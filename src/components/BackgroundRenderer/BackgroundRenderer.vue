@@ -115,7 +115,6 @@
 
 
 <script lang="ts">
-import { ref }  from "vue";
 import { Box, Camera, LambertMaterial, DirectionalLight, AmbientLight, Renderer, Scene } from 'troisjs';
 
 type Matrix = {
@@ -132,13 +131,14 @@ type Particle = {
 }
 
 const GLOBAL = {
-	SCENE_ROTATION_SPEED: 0.0002,
+	PARTICLE_MAX_SIZE: 10,
+	SCENE_ROTATION_SPEED: 0.02,
 	COLORS: {
 		YELLOW: "#ffb000",
 		WHITE: "#ffffff",
 		SOFT_WHITE: "#fafafa"
 	},
-	PARTICLE_COUNT: 120
+	PARTICLE_COUNT: 512
 };
 
 export default {
@@ -157,12 +157,6 @@ export default {
 				p.rotation.y += rotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
 				p.rotation.z += rotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
 			})
-
-			this.sceneRotation = {
-				...this.sceneRotation,
-				x: this.sceneRotation.x + GLOBAL.SCENE_ROTATION_SPEED,
-				y: this.sceneRotation.y + (GLOBAL.SCENE_ROTATION_SPEED * 2),
-			}
 		});
 	},
 	data() {
@@ -199,7 +193,7 @@ const createParticles = (): Particle[] => {
 		particle.positionMatrix.y = Math.random() * 200 - 100;
 		particle.positionMatrix.z = Math.random() * 200 - 100;
 
-		particle.scaleMatrix.x = particle.scaleMatrix.y = particle.scaleMatrix.z = 0.00001;
+		particle.scaleMatrix.x = particle.scaleMatrix.y = particle.scaleMatrix.z = Math.random() * GLOBAL.PARTICLE_MAX_SIZE
 
 		particles.push( particle );
 	}
@@ -224,22 +218,30 @@ const setupCameraPosition = () => {
 <template>
 	<Renderer
 		ref="renderer"
-		resize="'window'"
+		width="1024"
+		height="768"
+		antialias
 	>
 		<Camera :position="cameraPosition" />
-		<Scene :background="sceneBGColor">
+		<Scene 
+			:background="sceneBGColor"
+		>
 		<DirectionalLight
 			:color="lightColor"
 			:intensity="0.4"
+			:castShadow="true"
+			:position="cameraPosition"
 		/>
 		<AmbientLight 
 			:color="ambientLightColor"
+			:position="cameraPosition"
 		/>
 
 		<Box
 			v-for="particle in bgParticles"
 			:scale="particle.scaleMatrix"
 			:position="particle.positionMatrix"
+			:rotation="particle.rotationMatrix"
 			ref="bgParticlesRefs"
 		>
 			<LambertMaterial 
