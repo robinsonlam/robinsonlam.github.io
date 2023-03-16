@@ -16,9 +16,10 @@ type Particle = {
 }
 
 const GLOBAL = {
+	PARTICLE_MIN_SIZE: 0.001,
 	PARTICLE_MAX_SIZE: 3,
-	PARTICLE_ROTATION_SPEED: 1,
-	SCENE_ROTATION_SPEED: 0.4,
+	PARTICLE_ROTATION_SPEED: 0.6,
+	SCENE_ROTATION_SPEED: 0.3,
 	COLORS: {
 		YELLOW: "#ffb000",
 		WHITE: "#ffffff",
@@ -44,12 +45,18 @@ export default {
 				p.rotation.z += rotationSpeed;
 			})
 		});
+
+		// window.addEventListener('resize', this.onWindowResize);
+	},
+	beforeDestroy() {
+		// window.removeEventListener('resize', this.onWindowResize); 
 	},
 	data() {
 		return {
 			sceneRotationSpeed: GLOBAL.SCENE_ROTATION_SPEED,
 			sceneBGColor: GLOBAL.COLORS.YELLOW,
 			lightColor: GLOBAL.COLORS.WHITE,
+			bottomLightColor: GLOBAL.COLORS.WHITE,
 			ambientLightColor: GLOBAL.COLORS.SOFT_WHITE,
 			cameraPosition: {
 				x: 0, y: 0, z: 0
@@ -60,6 +67,16 @@ export default {
 			bgParticles: [] as Particle[],
 			bgParticlesRefs: [] as { rotation: Matrix }[],
 			scenePosition: new Vector3(0, 0, 0),
+		}
+	},
+	methods: {
+		onWindowResize() {
+			let renderer = this.$refs.renderer as typeof Renderer;
+			let camera = this.$refs.camera as typeof Camera;
+			
+			renderer.width = window.innerWidth.toString();
+			renderer.height = window.innerHeight.toString();
+			camera.aspect = window.innerWidth / window.innerHeight;
 		}
 	}
 };
@@ -77,11 +94,11 @@ const createParticles = (): Particle[] => {
 		}
 
 		particle.name = "Cube Particle";
-		particle.positionMatrix.x = Math.random() * 200 - 100;
-		particle.positionMatrix.y = Math.random() * 200 - 100;
-		particle.positionMatrix.z = Math.random() * 200 - 100;
+		particle.positionMatrix.x = Math.random() * 500 - 250;
+		particle.positionMatrix.y = Math.random() * 300 - 150;
+		particle.positionMatrix.z = Math.random() * 500 - 250;
 
-		particle.scaleMatrix.x = particle.scaleMatrix.y = particle.scaleMatrix.z = Math.random() * GLOBAL.PARTICLE_MAX_SIZE
+		particle.scaleMatrix.x = particle.scaleMatrix.y = particle.scaleMatrix.z = Math.random() * (GLOBAL.PARTICLE_MAX_SIZE - GLOBAL.PARTICLE_MIN_SIZE) + GLOBAL.PARTICLE_MIN_SIZE
 
 		particles.push( particle );
 	}
@@ -97,73 +114,83 @@ const setupCameraPosition = () => {
 	// * Setup Camera & Camera Position
 	cameraPosition.x = 0;
 	cameraPosition.y = 0;
-	cameraPosition.z = 200;
+	cameraPosition.z = 300;
 
 	return cameraPosition;
 };
 </script>
 
 <template>
-	<Renderer
-		ref="renderer"
-		width="1024"
-		height="768"
-		antialias
-		shadow
-		:orbitCtrl="{
-			autoRotate: true,
-			enableDamping: true,
-			target: scenePosition,
-			autoRotateSpeed: sceneRotationSpeed
-		 }"
-	>
-		<Camera :position="cameraPosition" />
-		<Scene 
-			:background="sceneBGColor"
+	<div id="backgroundRenderer">
+		<Renderer
+			ref="renderer"
+			resize 
+			antialias
+			shadow
+			:orbitCtrl="{
+				autoRotate: true,
+				enableDamping: true,
+				target: scenePosition,
+				autoRotateSpeed: sceneRotationSpeed
+			}"
 		>
-			<DirectionalLight
-				cast-shadow
-				:color="lightColor"
-				:intensity="0.8"
-				:position="{
-					x: 0,
-					y: 100,
-					z: 0
-				}"
-			/>
-			<DirectionalLight
-				cast-shadow
-				:color="lightColor"
-				:intensity="0.4"
-				:position="{
-					x: 0,
-					y: -100,
-					z: 0
-				}"
-			/>
-			<AmbientLight 
-				:color="ambientLightColor"
-				:intensity="0.7"
-				:position="scenePosition"
-			/>
-
-			<Box
-				v-for="particle in bgParticles"
-				:scale="particle.scaleMatrix"
-				:position="particle.positionMatrix"
-				:rotation="particle.rotationMatrix"
-				ref="bgParticlesRefs"
-				receive-shadow
+			<Camera :position="cameraPosition" />
+			<Scene 
+				:background="sceneBGColor"
 			>
-				<LambertMaterial 
-					:color="sceneBGColor"
+				<DirectionalLight
+					cast-shadow
+					:color="lightColor"
+					:intensity="0.8"
+					:position="{
+						x: 0,
+						y: 100,
+						z: 0
+					}"
 				/>
-			</Box>
-		</Scene>
-	</Renderer>
+				<DirectionalLight
+					cast-shadow
+					:color="bottomLightColor"
+					:intensity="0.2"
+					:position="{
+						x: 0,
+						y: -100,
+						z: 0
+					}"
+				/>
+				<AmbientLight 
+					:color="ambientLightColor"
+					:intensity="0.7"
+					:position="scenePosition"
+				/>
+
+				<Box
+					v-for="particle in bgParticles"
+					:scale="particle.scaleMatrix"
+					:position="particle.positionMatrix"
+					:rotation="particle.rotationMatrix"
+					ref="bgParticlesRefs"
+					receive-shadow
+				>
+					<LambertMaterial 
+						:color="sceneBGColor"
+					/>
+				</Box>
+			</Scene>
+		</Renderer>
+	</div>
 </template>
 
 <style scoped>
+	#backgroundRenderer {
+		filter: brightness(0.8);
+		width: 100vw;
+		height: 100vh;
+		z-index: -10;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
 </style>
 
 
