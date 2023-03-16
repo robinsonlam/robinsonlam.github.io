@@ -1,120 +1,5 @@
-<!-- <script setup lang="ts">
-	import { onMounted, h } from "vue";
-	import * as THREE from 'troisjs';
-
-	interface ThreeCamera {
-		camera: THREE.PerspectiveCamera,
-	}
-
-	interface ThreeRenderer {
-		renderer: THREE.WebGLRenderer,
-	}
-
-	interface ThreeScene {
-		scene: THREE.Scene,
-	};
-
-	const GLOBAL = {
-		SCENE_ROTATION_SPEED: 0.0002,
-		COLORS: {
-			YELLOW: 0xffb000
-		}
-	};
-
-	const setupScene = () => {
-		// * Setup Camera & Camera Position
-		const camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 4000 );
-		// Set camera position
-		camera.position.z = 200;
-		camera.position.y = 0;
-		camera.position.x = 0;
-
-		// * Setup Renderer
-		const renderer = new THREE.WebGLRenderer();
-		renderer.setSize( window.innerWidth, window.innerHeight );
-
-		// * Setup Scene
-		const scene = new THREE.Scene();
-		scene.background = new THREE.Color( GLOBAL.COLORS.YELLOW );
-
-		return { camera, renderer, scene };
-};
-	const setupLighting = ({ scene }: ThreeScene) => {
-		// * Setup Lighting
-		var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.4 );
-		var light = new THREE.AmbientLight( 0xfafafa ); // soft white light
-
-		scene.add( directionalLight );
-		scene.add( light );
-	};
-	const createParticles = ({ scene }: ThreeScene) => {
-		var particleCount = 1024;
-		for ( var i = 0; i < particleCount; i++ ) {
-			var scaleX = Math.random() * 2;
-			var geometry = new THREE.BoxGeometry( scaleX, scaleX, scaleX );
-			var pMaterial = new THREE.MeshLambertMaterial({ color: 0xffb000 });
-			var particle = new THREE.Mesh( geometry, pMaterial );
-
-			particle.name = "Cube Particle";
-			particle.position.x = Math.random() * 200 - 100;
-			particle.position.y = Math.random() * 200 - 100;
-			particle.position.z = Math.random() * 200 - 100;
-
-			particle.scale.x = particle.scale.y = particle.scale.z = 0.00001;
-			scene.add( particle );
-		}
-	};
-	const onWindowResize = ({ camera, renderer }: ThreeCamera & ThreeRenderer) => {
-		camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-		renderer.setSize( window.innerWidth, window.innerHeight );
-	};
-		// const createSphere = ({ scene, radius = 1, widthSegments = 32, heightSegments = 32, color = GLOBAL.COLORS.YELLOW }) => {
-	// 	var geometry = new THREE.SphereGeometry( radius, widthSegments, heightSegments );
-	// 	var material = new THREE.MeshLambertMaterial({ color });
-	// 	var sphere = new THREE.Mesh( geometry, material );
-	// 	scene.add( sphere );
-	// };
-	const animate = ({ camera, renderer, scene  }: ThreeCamera & ThreeRenderer & ThreeScene ) => {
-		requestAnimationFrame( () => animate({ scene, renderer, camera }) );
-		renderer.render( scene, camera );
-
-		scene.rotation.x += GLOBAL.SCENE_ROTATION_SPEED;
-		scene.rotation.y += GLOBAL.SCENE_ROTATION_SPEED * 2;
-
-		for (var i = 0; i < scene.children.length; i++) {
-			var meshItem = scene.children[i];
-			if (meshItem.name === "Cube Particle" ) {
-				let meshItemRotateSpeed = Math.random() * 0.008;
-				meshItem.rotation.x += meshItemRotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
-				meshItem.rotation.y += meshItemRotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
-				meshItem.rotation.z += meshItemRotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
-			}
-		}
-	};
-
-
-
-	// * Init
-	const { camera, renderer, scene } = setupScene();
-	// setupLighting({ scene });
-
-	// Set size and responsive functionality for renderer
-	window.addEventListener( 'resize', () => onWindowResize({ camera, renderer }), false );
-
-	// Add renderer to DOM
-	const RendererElement = renderer.domElement.outerHTML;
-
-	// Create shapes
-	createParticles({ scene });
-
-	onMounted(() => {
-		animate({ camera, renderer, scene });
-	})
-</script> -->
-
-
 <script lang="ts">
+import { Vector3 } from 'three';
 import { Box, Camera, LambertMaterial, DirectionalLight, AmbientLight, Renderer, Scene } from 'troisjs';
 
 type Matrix = {
@@ -131,14 +16,15 @@ type Particle = {
 }
 
 const GLOBAL = {
-	PARTICLE_MAX_SIZE: 10,
-	SCENE_ROTATION_SPEED: 0.02,
+	PARTICLE_MAX_SIZE: 3,
+	PARTICLE_ROTATION_SPEED: 1,
+	SCENE_ROTATION_SPEED: 0.4,
 	COLORS: {
 		YELLOW: "#ffb000",
 		WHITE: "#ffffff",
 		SOFT_WHITE: "#fafafa"
 	},
-	PARTICLE_COUNT: 512
+	PARTICLE_COUNT: 1024
 };
 
 export default {
@@ -152,15 +38,16 @@ export default {
 		const renderer = this.$refs.renderer as typeof Renderer;
 		renderer.onBeforeRender(() => {	
 			bgParticleRefs?.forEach((p) => {
-				let rotateSpeed = Math.random() * 0.008;
-				p.rotation.x += rotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
-				p.rotation.y += rotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
-				p.rotation.z += rotateSpeed + GLOBAL.SCENE_ROTATION_SPEED;
+				let rotationSpeed = Math.random() * (GLOBAL.PARTICLE_ROTATION_SPEED) * 0.03;
+				p.rotation.x += rotationSpeed;
+				p.rotation.y += rotationSpeed;
+				p.rotation.z += rotationSpeed;
 			})
 		});
 	},
 	data() {
 		return {
+			sceneRotationSpeed: GLOBAL.SCENE_ROTATION_SPEED,
 			sceneBGColor: GLOBAL.COLORS.YELLOW,
 			lightColor: GLOBAL.COLORS.WHITE,
 			ambientLightColor: GLOBAL.COLORS.SOFT_WHITE,
@@ -171,7 +58,8 @@ export default {
 				x: 0, y: 0, z: 0
 			},
 			bgParticles: [] as Particle[],
-			bgParticlesRefs: [] as { rotation: Matrix }[]
+			bgParticlesRefs: [] as { rotation: Matrix }[],
+			scenePosition: new Vector3(0, 0, 0),
 		}
 	}
 };
@@ -221,33 +109,56 @@ const setupCameraPosition = () => {
 		width="1024"
 		height="768"
 		antialias
+		shadow
+		:orbitCtrl="{
+			autoRotate: true,
+			enableDamping: true,
+			target: scenePosition,
+			autoRotateSpeed: sceneRotationSpeed
+		 }"
 	>
 		<Camera :position="cameraPosition" />
 		<Scene 
 			:background="sceneBGColor"
 		>
-		<DirectionalLight
-			:color="lightColor"
-			:intensity="0.4"
-			:castShadow="true"
-			:position="cameraPosition"
-		/>
-		<AmbientLight 
-			:color="ambientLightColor"
-			:position="cameraPosition"
-		/>
-
-		<Box
-			v-for="particle in bgParticles"
-			:scale="particle.scaleMatrix"
-			:position="particle.positionMatrix"
-			:rotation="particle.rotationMatrix"
-			ref="bgParticlesRefs"
-		>
-			<LambertMaterial 
-				:color="sceneBGColor"
+			<DirectionalLight
+				cast-shadow
+				:color="lightColor"
+				:intensity="0.8"
+				:position="{
+					x: 0,
+					y: 100,
+					z: 0
+				}"
 			/>
-		</Box>
+			<DirectionalLight
+				cast-shadow
+				:color="lightColor"
+				:intensity="0.4"
+				:position="{
+					x: 0,
+					y: -100,
+					z: 0
+				}"
+			/>
+			<AmbientLight 
+				:color="ambientLightColor"
+				:intensity="0.7"
+				:position="scenePosition"
+			/>
+
+			<Box
+				v-for="particle in bgParticles"
+				:scale="particle.scaleMatrix"
+				:position="particle.positionMatrix"
+				:rotation="particle.rotationMatrix"
+				ref="bgParticlesRefs"
+				receive-shadow
+			>
+				<LambertMaterial 
+					:color="sceneBGColor"
+				/>
+			</Box>
 		</Scene>
 	</Renderer>
 </template>
