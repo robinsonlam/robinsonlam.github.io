@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import BackgroundRenderer from './components/BackgroundRenderer/BackgroundRenderer.vue'
+// * Global
+import GlobalNavigation from './components/core/GlobalNavigation/GlobalNavigation.vue'
+import BackgroundRenderer from './components/core/BackgroundRenderer/BackgroundRenderer.vue'
+import TheFooter from './components/core/TheFooter/TheFooter.vue'
 </script>
 
 <template>
+  <router-view />
+
+  <GlobalNavigation />
   <BackgroundRenderer />
+  <TheFooter />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+#app {
+  
 }
 </style>
