@@ -1,15 +1,29 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import axios, {isCancel, AxiosError} from 'axios';
+
+let baseUrl = 'http://localhost:3000/rlc/musicPlayer'
 
 let songSearchInput = ref(undefined);
 let songResultList = ref(undefined);
+let searchResults = ref([]);
 
-const searchSongName = (e) => {
+
+const searchSongName = async (e) => {
   e.preventDefault();
-  console.log("I just called to say I:", songSearchInput.value);
 
-  let searchValue = songSearchInput.value;
+  let searchValue = songSearchInput?.value;
+  console.log("I just called to say I:", searchValue);
   console.log("TODO: Send request to server to search Spotify API for tracks and return them")
+
+
+  let url = `${baseUrl}/search`;
+
+  if (searchValue && typeof searchValue === 'string') {
+    url += `?query=${searchValue}`
+  }
+
+  searchResults = await axios.get(url);
 };
 
 </script>
