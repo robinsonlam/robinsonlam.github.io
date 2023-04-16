@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import axios, {isCancel, AxiosError} from 'axios';
+import axios from 'axios';
 
-let baseUrl = 'http://localhost:3000/rlc/musicPlayer'
+import config from '@configs/config';
+let { API_BASE_URL } = config;
+
+let baseUrl = `${API_BASE_URL}/rlc/musicPlayer`
 
 let songSearchInput = ref(undefined);
 let searchResults = ref([]);
