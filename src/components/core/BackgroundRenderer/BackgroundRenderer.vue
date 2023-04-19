@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Vector3 } from 'three';
 import { Box, Camera, LambertMaterial, DirectionalLight, AmbientLight, Renderer, Scene } from 'troisjs';
+import { musicPlayerStore } from '@states/musicPlayerStore'
 
 type Matrix = {
 	x: number,
@@ -25,25 +26,60 @@ const GLOBAL = {
 		WHITE: "#ffffff",
 		SOFT_WHITE: "#fafafa"
 	},
-	PARTICLE_COUNT: 1024
+	PARTICLE_COUNT: 128
 };
 
 export default {
 	components: { Box, Camera, LambertMaterial, DirectionalLight, AmbientLight, Renderer, Scene },
+	// props: ['musicAnalyser'],
 	created() {
 		this.cameraPosition = setupCameraPosition()
 		this.bgParticles = createParticles()
 	},
 	mounted() {
 		let bgParticleRefs = this.$refs.bgParticlesRefs as { rotation: Matrix }[];
+		let sceneRef = this.$refs.sceneRef as { rotation: Matrix }[];
 		const renderer = this.$refs.renderer as typeof Renderer;
+
+		let fbc_array = new Uint8Array(1024);
+		let self = this;
+		// * Start animation
 		renderer.onBeforeRender(() => {	
-			bgParticleRefs?.forEach((p) => {
-				let rotationSpeed = Math.random() * (GLOBAL.PARTICLE_ROTATION_SPEED) * 0.03;
+			if (musicPlayerStore.playing && musicPlayerStore.analyser) {
+				let analyser = musicPlayerStore.analyser;
+				analyser.getByteFrequencyData(fbc_array);
+			}
+
+			bgParticleRefs?.forEach((p, i) => {
+				let scale = 1;
+				//  (Math.random() * (50) +
+				if (musicPlayerStore.playing && fbc_array[i]) {
+					scale = Math.pow(
+						(
+							fbc_array[i] / 40
+						), 2);
+
+					// p.color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+				}
+
+				// * Particle Scale
+				if (scale > 0) {
+					p.scale.x = p.scale.y = p.scale.z = scale * 2;
+				} else {
+					p.scale.x = p.scale.y = p.scale.z = 0.1;
+				}
+
+				// * Particle Rotation
+				let rotationSpeed = Math.random() * (GLOBAL.PARTICLE_ROTATION_SPEED) * 0.02 * (scale / 5);
 				p.rotation.x += rotationSpeed;
 				p.rotation.y += rotationSpeed;
 				p.rotation.z += rotationSpeed;
 			})
+
+				// * Scene Rotation Speedd
+			let sceneSpeed = (fbc_array.reduce((a, b) => a + b, 0) || 1) / (fbc_array.length || 1);
+			renderer.three.cameraCtrl.autoRotateSpeed = GLOBAL.SCENE_ROTATION_SPEED * (sceneSpeed * 0.5);
+			renderer.three.cameraCtrl.update()
 		});
 
 		// window.addEventListener('resize', this.onWindowResize);
@@ -99,6 +135,8 @@ const createParticles = (): Particle[] => {
 		particle.positionMatrix.z = Math.random() * 500 - 250;
 
 		particle.scaleMatrix.x = particle.scaleMatrix.y = particle.scaleMatrix.z = Math.random() * (GLOBAL.PARTICLE_MAX_SIZE - GLOBAL.PARTICLE_MIN_SIZE) + GLOBAL.PARTICLE_MIN_SIZE
+
+		particle.color = GLOBAL.COLORS.YELLOW;
 
 		particles.push( particle );
 	}
@@ -173,7 +211,7 @@ const setupCameraPosition = () => {
 					receive-shadow
 				>
 					<LambertMaterial 
-						:color="sceneBGColor"
+						:color="particle.color"
 					/>
 				</Box>
 			</Scene>

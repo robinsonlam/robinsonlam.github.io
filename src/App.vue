@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // * Global
+import { ref } from 'vue';
 import GlobalNavigation from './components/core/GlobalNavigation/GlobalNavigation.vue'
 import BackgroundRenderer from './components/core/BackgroundRenderer/BackgroundRenderer.vue'
 import TheFooter from './components/core/TheFooter/TheFooter.vue'
